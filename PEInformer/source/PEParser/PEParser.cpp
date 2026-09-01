@@ -38,12 +38,14 @@ bool PEParser::OpenFile()
 		uintptr_t LengthReadFile = isReadFile.tellg();
 		isReadFile.seekg(0, isReadFile.beg);
 
-		PEParser::BuildPE.erase(PEParser::BuildPE.begin(), PEParser::BuildPE.end());
+		PEParser::BuildPE.clear();
 		PEParser::BuildPE.resize(LengthReadFile);
 
 		if (isReadFile.read((char*)(PEParser::BuildPE.data()), LengthReadFile))
 			return true;
 	}
+
+	return false;
 }
 
 
@@ -76,7 +78,7 @@ std::vector<PEParser::RichHeader> PEParser::ReadRichHeader(uint32_t* EndMSD)
 	}
 
 	FindDans += 5;
-	while (*FindDans != 0x68636952 && FindDans < EndMSD - 1)
+	while (EndMSD > StartFile && *EndMSD != 0x68636952)
 	{
 		uint32_t Value1 = *(FindDans) ^ *XORKey;
 		uint32_t Value2 = *(FindDans + 1) ^ *XORKey;

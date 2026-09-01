@@ -1,5 +1,7 @@
 #include "gui.h"
 #include "NunitoFont.h"
+#include "materialSymbolsOutlined.h"
+
 #include "../PEParser/PEParser.h"
 #include "../../resource.h"
 
@@ -257,7 +259,7 @@ int GUI::InitGUI()
 
     GUI::NunitoFontMedium = ImGui::GetIO().Fonts->AddFontFromMemoryCompressedTTF(nunito_font_compressed_data, nunito_font_compressed_size, 20.5f, &config, ImGui::GetIO().Fonts->GetGlyphRangesCyrillic());
     GUI::NunitoFontHigh = ImGui::GetIO().Fonts->AddFontFromMemoryCompressedTTF(nunito_font_compressed_data, nunito_font_compressed_size, 22.5f, &config, ImGui::GetIO().Fonts->GetGlyphRangesCyrillic());
-    GUI::MaterialSymbolsFont = ImGui::GetIO().Fonts->AddFontFromFileTTF("C:\\CICI\\MaterialSymbolsOutlined[FILL,GRAD,opsz,wght].ttf", 25.5f, &IconsConfig, IconRanges);
+    GUI::MaterialSymbolsFont = ImGui::GetIO().Fonts->AddFontFromMemoryCompressedBase85TTF(MyIcons_compressed_data_base85, 25.5f, &IconsConfig, IconRanges);
 
     bool done = false;
     ImGuiWindowFlags Flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoCollapse;

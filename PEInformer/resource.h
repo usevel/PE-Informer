@@ -3,6 +3,7 @@
 // Используется PEInformer.rc
 //
 #define IDI_ICON1                       111
+#define IDR_FONT_MATERIAL_SYMBOLS		101
 
 // Next default values for new objects
 // 

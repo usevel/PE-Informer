@@ -1,0 +1,15 @@
+PEInformer/imgui/** linguist-vendored
+**/imgui/** linguist-vendored
+*imstb* linguist-vendored
+
+**/*.h linguist-language=C++
+*.h linguist-language=C++
+
+**/*Font*.h linguist-vendored
+**/*font*.h linguist-vendored
+**/*CompId*.h linguist-vendored
+**/*materialSymbols*.h linguist-vendored
+
+**/imgui/** linguist-vendored
+
+*.ttf binary

@@ -1,6 +1,5 @@
 #include "gui.h"
 #include "NunitoFont.h"
-#include "materialSymbolsOutlined.h"
 
 #include "../PEParser/PEParser.h"
 #include "../../resource.h"
@@ -24,6 +23,21 @@ void CreateRenderTarget();
 void CleanupRenderTarget();
 void  ImguiStyle(ImGuiStyle& style);
 LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
+static bool GetResourceData(int resourceId, void*& outData, DWORD& outSize)
+{
+    HRSRC hRes = FindResource(GetModuleHandle(nullptr), MAKEINTRESOURCE(resourceId), RT_RCDATA);
+    if (!hRes)
+        return false;
+
+    HGLOBAL hData = LoadResource(GetModuleHandle(nullptr), hRes);
+    if (!hData)
+        return false;
+
+    outData = LockResource(hData);
+    outSize = SizeofResource(GetModuleHandle(nullptr), hRes);
+    return (outData != nullptr && outSize > 0);
+}
 
 void DrawPEParserUI(HWND Handle)
 {
@@ -259,7 +273,15 @@ int GUI::InitGUI()
 
     GUI::NunitoFontMedium = ImGui::GetIO().Fonts->AddFontFromMemoryCompressedTTF(nunito_font_compressed_data, nunito_font_compressed_size, 20.5f, &config, ImGui::GetIO().Fonts->GetGlyphRangesCyrillic());
     GUI::NunitoFontHigh = ImGui::GetIO().Fonts->AddFontFromMemoryCompressedTTF(nunito_font_compressed_data, nunito_font_compressed_size, 22.5f, &config, ImGui::GetIO().Fonts->GetGlyphRangesCyrillic());
-    GUI::MaterialSymbolsFont = ImGui::GetIO().Fonts->AddFontFromMemoryCompressedBase85TTF(MyIcons_compressed_data_base85, 25.5f, &IconsConfig, IconRanges);
+    void* pFontData = nullptr;
+    DWORD fontSize = 0;
+
+    if (GetResourceData(IDR_FONT_MATERIAL_SYMBOLS, pFontData, fontSize))
+    {
+        IconsConfig.FontDataOwnedByAtlas = false;
+
+        GUI::MaterialSymbolsFont = io.Fonts->AddFontFromMemoryTTF(pFontData, static_cast<int>(fontSize), 25.5f, &IconsConfig, IconRanges);
+    }
 
     bool done = false;
     ImGuiWindowFlags Flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoCollapse;
